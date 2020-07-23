@@ -1,5 +1,5 @@
 # kong-auth-request
-A Kong plugin that make GET auth request before proxying the original request.
+A Kong plugin that make POST auth request before proxying the original request.
 
 ## Description
 kong-auth-request is a reincarnation of [ngx http auth request](http://nginx.org/en/docs/http/ngx_http_auth_request_module.html "ngx http auth request").    
@@ -35,6 +35,14 @@ config parameter | description
 config.auth_uri  | Plugin make a HTTP GET request with Authorization header to this URL before proxying the original request
 config.auth_response_headers_to_forward | If auth request was successful then plugin takes header names from auth_response_headers_to_forward collection, then finds them in auth response headers and adds them into origin request before proxying it to upstream.
 config.origin_request_headers_to_forward_to_auth | Origin request headers to pass to auth uri
+
+Auth-request will execute a JSON POST request to the specified url with the following body:  
+
+| Attribute |                            Description                            |
+| --------- | :---------------------------------------------------------------: |
+| method    |  The http method of the original request. Ex: GET, POST and etc...  |
+| path      | The url path of the original request. Ex: /service_id/resource/id |
+
 ## Author
 
 Andray Shotkin
