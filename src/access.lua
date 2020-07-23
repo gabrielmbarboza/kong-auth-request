@@ -43,6 +43,13 @@ function _M.new_auth_request(origin_request_headers_to_forward_to_auth, keepaliv
         charset = "utf-8",
         ["content-type"] = "application/json"
     }
+    local method = kong.request.get_method()
+    local path = kong.request.get_path()
+    local body_data = {
+        method = method,
+        path = path
+    }
+    local body = cjson.encode(body_data)
     for _, name in ipairs(origin_request_headers_to_forward_to_auth) do
         local header_val = kong.request.get_header(name)
         if header_val then
@@ -50,9 +57,9 @@ function _M.new_auth_request(origin_request_headers_to_forward_to_auth, keepaliv
         end
     end
     return {
-        method = "GET",
+        method = "POST",
         headers = headers,
-        body = "",
+        body = body,
         keepalive_timeout = keepalive_timeout
     }
 end
